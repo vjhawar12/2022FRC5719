@@ -24,11 +24,12 @@ public class Drive extends SubsystemBase {
  
     DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
     
-    public void driveSystem() {
-        
+    public void driveJoytick(Joystick joystick, double speed) {
+        m_drive.arcadeDrive(speed * joystick.getY(), speed * joystick.getX());
     } 
 
-    public void useJoystick(Joystick joystick) {
-        
+    public void drive(double speed, double rotation) {
+        m_drive.arcadeDrive(speed, rotation);
     }
+
 }
