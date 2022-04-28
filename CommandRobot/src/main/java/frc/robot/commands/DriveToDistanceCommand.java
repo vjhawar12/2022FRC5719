@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotContainer; 
 
-public class DriveToDistanceCommand extends SequentialCommandGroup {
+public class DriveToDistanceCommand extends Command {
     DriveCommand driveCommand = new DriveCommand(); 
     double distance = 0.0; 
     double speed = 0.0; 
@@ -30,11 +30,13 @@ public class DriveToDistanceCommand extends SequentialCommandGroup {
         return Math.abs(RobotContainer.driveSubsystem.getAvgDistance() - distance) <= 0.1; 
     }
 
+    @Override
     public void end() {
         RobotContainer.driveSubsystem.stop(); 
         driveCommand.execute(); 
     }
 
+    @Override
     public void interrupted() {
         end(); 
     }

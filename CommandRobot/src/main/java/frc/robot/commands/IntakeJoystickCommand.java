@@ -2,9 +2,9 @@ package frc.robot.commands;
 
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj.command.Command;
 
-public class IntakeJoystickCommand extends SequentialCommandGroup {
+public class IntakeJoystickCommand extends Command {
     IntakeJoystickCommand() {
 
     }
@@ -12,5 +12,11 @@ public class IntakeJoystickCommand extends SequentialCommandGroup {
     @Override
     protected void initialize() {
         RobotContainer.intakeSubsystem.stop(); 
+    }
+
+    @Override 
+    public boolean isFinished() {
+        // 
+        return false;  
     }
 }
