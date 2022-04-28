@@ -4,23 +4,24 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Joystick; 
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup; 
+import edu.wpi.first.wpilibj.motorcontrol.PWMMotorController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX; 
 import frc.robot.Constants;
-import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX; 
+
 import edu.wpi.first.wpilibj.Encoder; 
 
 public class DriveSubsystem extends SubsystemBase {
 
     PWM motor = new PWM(Constants.pwm); 
 
-    MotorController m_frontLeft = new PWMVictorSPX(1);
-    MotorController m_rearLeft = new PWMVictorSPX(2);
-    MotorControllerGroup m_left = new MotorControllerGroup(m_frontLeft, m_rearLeft);
+    PWMMotorController frontLeft = new PWMTalonSRX(Constants.talonFrontLeft);
+    PWMMotorController rearLeft = new PWMTalonSRX(Constants.talonBackLeft);
+    MotorControllerGroup left = new MotorControllerGroup(frontLeft, rearLeft);
  
-    MotorController m_frontRight = new PWMVictorSPX(3);
-    MotorController m_rearRight = new PWMVictorSPX(4);
-    MotorControllerGroup m_right = new MotorControllerGroup(m_frontRight, m_rearRight);
+    PWMMotorController frontRight = new PWMTalonSRX(Constants.talonFrontRight);
+    PWMMotorController rearRight = new PWMTalonSRX(Constants.talonBackRight);
+    MotorControllerGroup right = new MotorControllerGroup(frontRight, frontLeft);
  
     DifferentialDrive m_drive; 
 
@@ -39,11 +40,11 @@ public class DriveSubsystem extends SubsystemBase {
     );
 
     public DriveSubsystem() {
-        m_frontLeft.setInverted(false); 
-        m_frontRight.setInverted(false); 
-        m_rearRight.setInverted(false); 
-        m_rearLeft.setInverted(false); 
-        m_drive = new DifferentialDrive(m_left, m_right);
+        frontLeft.setInverted(false); 
+        frontRight.setInverted(false); 
+        rearRight.setInverted(false); 
+        rearLeft.setInverted(false); 
+        m_drive = new DifferentialDrive(left, right);
     }
     
     public void driveJoytick(Joystick joystick, double speed) {
