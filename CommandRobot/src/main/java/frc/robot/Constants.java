@@ -20,4 +20,9 @@ public final class Constants {
     public static final int pwm = 1; 
     public static final int joystickDriver = 1; 
     public static final int joystickOperator = 2; 
+    public static final int rightEncoder1 = 1;
+    public static final int rightEncoder2 = 2; 
+    public static final int leftEncoder1 = 1;
+    public static final int leftEncoder2 = 2; 
+    public static final double encoderValue = 0.0008; 
 }

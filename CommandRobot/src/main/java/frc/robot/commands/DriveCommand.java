@@ -8,10 +8,14 @@ import frc.robot.Robot;
 public class DriveCommand extends CommandBase {
 @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField", "unused"})
 
-  private final DriveSubsystem m_subsystem;
+  private final DriveSubsystem driveSubsystem;
+
+  public DriveCommand() {
+    driveSubsystem = null;
+  }
 
   public DriveCommand(DriveSubsystem subsystem) {
-    m_subsystem = subsystem;
+    driveSubsystem = subsystem;
     addRequirements(subsystem);
   }
 
@@ -30,7 +34,11 @@ public class DriveCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      
+      RobotContainer.driveSubsystem.stop(); 
+  }
+
+  public void interrupted() {
+    end(true); 
   }
 
   // Returns true when the command should end.
