@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick; 
+import frc.*; 
 
 public class OI {
 
@@ -13,5 +14,9 @@ public class OI {
 
     public Joystick getOperator() {
         return operator; 
+    }
+
+    public OI() {
+        
     }
 }
