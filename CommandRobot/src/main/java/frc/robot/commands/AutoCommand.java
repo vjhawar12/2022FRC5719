@@ -9,7 +9,7 @@ public class AutoCommand extends Command {
 
 
     public AutoCommand() {
-        addCommands(driveCommand); 
+        // add commands
     }
 
     @Override
