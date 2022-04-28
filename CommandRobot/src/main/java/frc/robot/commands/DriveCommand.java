@@ -2,10 +2,12 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer; 
 import frc.robot.Robot; 
 
 public class DriveCommand extends CommandBase {
-@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField", "unused"})
+
   private final DriveSubsystem m_subsystem;
 
   public DriveCommand(DriveSubsystem subsystem) {
@@ -15,11 +17,15 @@ public class DriveCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    RobotContainer.driveSubsystem.stop(); 
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    RobotContainer.driveSubsystem.driveJoytick(Robot.oi.getDriver(), 1); 
+  }
 
   // Called once the command ends or is interrupted.
   @Override

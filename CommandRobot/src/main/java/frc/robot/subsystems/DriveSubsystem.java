@@ -1,14 +1,11 @@
 package frc.robot.subsystems;
 
-//test
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase; 
 import edu.wpi.first.wpilibj.Joystick; 
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup; 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX; 
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX; 
 
@@ -26,7 +23,7 @@ public class DriveSubsystem extends SubsystemBase {
  
     DifferentialDrive m_drive; 
 
-    DriveSubsystem() {
+    public DriveSubsystem() {
         m_frontLeft.setInverted(false); 
         m_frontRight.setInverted(false); 
         m_rearRight.setInverted(false); 
@@ -44,6 +41,16 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void stop() {
         m_drive.stopMotor(); 
+    }
+
+    @Override
+    public void periodic() {
+    // This method will be called once per scheduler run
+    }
+
+    @Override
+    public void simulationPeriodic() {
+    // This method will be called once per scheduler run during simulation
     }
 
 }

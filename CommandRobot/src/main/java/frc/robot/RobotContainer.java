@@ -10,6 +10,7 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -18,9 +19,9 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DriveSubsystem m_exampleSubsystem = new DriveSubsystem();
+  public static final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  public static final DriveCommand driveCommand = new DriveCommand(driveSubsystem);
 
-  private final DriveCommand m_autoCommand = new DriveCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -43,6 +44,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return driveCommand;
   }
 }
