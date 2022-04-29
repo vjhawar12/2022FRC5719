@@ -7,12 +7,13 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
+import edu.wpi.first.wpilibj.Joystick;
 
 public class Robot extends TimedRobot implements Constants {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private String autoSelected;
+  private final SendableChooser<String> sendableChooser = new SendableChooser<>();
 
   private PWMTalonSRX frontTalonLeft = new PWMTalonSRX(frontLeftMotorPort); 
   private PWMTalonSRX frontTalonRight = new PWMTalonSRX(frontRightMotorPort); 
@@ -22,16 +23,20 @@ public class Robot extends TimedRobot implements Constants {
   private MotorControllerGroup leftMotor = new MotorControllerGroup(frontTalonLeft, backTalonLeft); 
   private MotorControllerGroup rightMotor = new MotorControllerGroup(frontTalonRight, backTalonRight); 
 
-  @SuppressWarnings({"unused"})
-  private DifferentialDrive differentialDrive = new DifferentialDrive(leftMotor, rightMotor); 
+  public DifferentialDrive differentialDrive; 
+  public Joystick rightJoystick; 
+  public Joystick leftJoystick; 
 
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    sendableChooser.setDefaultOption("Default Auto", kDefaultAuto);
+    sendableChooser.addOption("My Auto", kCustomAuto);
+    SmartDashboard.putData("Auto choices", sendableChooser);
+    leftMotor.setInverted(true); 
+    differentialDrive = new DifferentialDrive(leftMotor, rightMotor); 
+    rightJoystick = new Joystick(rightJoystickPort); 
+    leftJoystick = new Joystick(leftJoystickPort); 
   }
-
 
   @Override
   public void robotPeriodic() {}
@@ -39,14 +44,14 @@ public class Robot extends TimedRobot implements Constants {
 
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
+    autoSelected = sendableChooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    System.out.println("Auto selected: " + autoSelected);
   }
 
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
+    switch (autoSelected) {
       case kCustomAuto:
         // Put custom auto code here
         break;
@@ -57,12 +62,13 @@ public class Robot extends TimedRobot implements Constants {
     }
   }
 
-
   @Override
   public void teleopInit() {}
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    differentialDrive.tankDrive(leftJoystick.getY(), rightJoystick.getY());
+  }
 
   @Override
   public void disabledInit() {}
