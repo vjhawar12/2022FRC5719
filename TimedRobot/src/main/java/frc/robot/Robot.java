@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.Timer; 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
 import edu.wpi.first.wpilibj.Joystick;
@@ -14,6 +14,8 @@ public class Robot extends TimedRobot implements Constants {
   private static final String kCustomAuto = "My Auto";
   private String autoSelected;
   private final SendableChooser<String> sendableChooser = new SendableChooser<>();
+
+  private final Timer timer = new Timer(); 
 
   private PWMTalonSRX frontTalonLeft = new PWMTalonSRX(frontLeftMotorPort); 
   private PWMTalonSRX frontTalonRight = new PWMTalonSRX(frontRightMotorPort); 
@@ -45,20 +47,17 @@ public class Robot extends TimedRobot implements Constants {
   @Override
   public void autonomousInit() {
     autoSelected = sendableChooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + autoSelected);
+    timer.reset(); 
+    timer.start(); 
   }
 
   @Override
   public void autonomousPeriodic() {
-    switch (autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
+    if (timer.get() < 5) {
+      differentialDrive.arcadeDrive(0.5, 0.0);
+    } else {
+      differentialDrive.stopMotor();
     }
   }
 
