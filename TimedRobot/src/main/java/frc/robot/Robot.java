@@ -3,12 +3,27 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
 
-public class Robot extends TimedRobot {
+public class Robot extends TimedRobot implements Constants {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
+  private PWMTalonSRX frontTalonLeft = new PWMTalonSRX(frontLeftMotorPort); 
+  private PWMTalonSRX frontTalonRight = new PWMTalonSRX(frontRightMotorPort); 
+  private PWMTalonSRX backTalonRight = new PWMTalonSRX(backRightMotorPort); 
+  private PWMTalonSRX backTalonLeft = new PWMTalonSRX(backLeftMotorPort); 
+
+  private MotorControllerGroup leftMotor = new MotorControllerGroup(frontTalonLeft, backTalonLeft); 
+  private MotorControllerGroup rightMotor = new MotorControllerGroup(frontTalonRight, backTalonRight); 
+
+  @SuppressWarnings({"unused"})
+  private DifferentialDrive differentialDrive = new DifferentialDrive(leftMotor, rightMotor); 
 
   @Override
   public void robotInit() {
