@@ -3,29 +3,23 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.Timer; 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 
 public class Robot extends TimedRobot implements Constants {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String autoSelected;
   private final SendableChooser<String> sendableChooser = new SendableChooser<>();
+  private Timer timer; 
 
-  private final Timer timer = new Timer(); 
+  private final VictorSPX frontMotorLeft = new VictorSPX(frontLeftMotorPort); 
+  private final VictorSPX frontMotorRight = new VictorSPX(frontRightMotorPort); 
+  private final VictorSPX backMotorRight = new VictorSPX(backRightMotorPort); 
+  private final VictorSPX backMotorLeft = new VictorSPX(backLeftMotorPort); 
 
-  private PWMTalonSRX frontTalonLeft = new PWMTalonSRX(frontLeftMotorPort); 
-  private PWMTalonSRX frontTalonRight = new PWMTalonSRX(frontRightMotorPort); 
-  private PWMTalonSRX backTalonRight = new PWMTalonSRX(backRightMotorPort); 
-  private PWMTalonSRX backTalonLeft = new PWMTalonSRX(backLeftMotorPort); 
-
-  private MotorControllerGroup leftMotor = new MotorControllerGroup(frontTalonLeft, backTalonLeft); 
-  private MotorControllerGroup rightMotor = new MotorControllerGroup(frontTalonRight, backTalonRight); 
-
-  public DifferentialDrive differentialDrive; 
   public Joystick rightJoystick; 
   public Joystick leftJoystick; 
 
@@ -34,56 +28,48 @@ public class Robot extends TimedRobot implements Constants {
     sendableChooser.setDefaultOption("Default Auto", kDefaultAuto);
     sendableChooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", sendableChooser);
-    leftMotor.setInverted(true); 
-    differentialDrive = new DifferentialDrive(leftMotor, rightMotor); 
+
+    frontMotorLeft.setInverted(true); 
     rightJoystick = new Joystick(rightJoystickPort); 
     leftJoystick = new Joystick(leftJoystickPort); 
   }
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    
+  }
 
 
   @Override
   public void autonomousInit() {
     autoSelected = sendableChooser.getSelected();
     System.out.println("Auto selected: " + autoSelected);
-    timer.reset(); 
-    timer.start(); 
+    timer = new Timer(); 
+    timer.start();
   }
 
   @Override
   public void autonomousPeriodic() {
-    if (timer.get() < 5) {
-      differentialDrive.arcadeDrive(0.5, 0.0);
-    } else {
-      differentialDrive.stopMotor();
-    }
+   if (timer.get() < 5.0) {
+    frontMotorRight.set(ControlMode.Velocity, 10);
+   }
   }
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+
+  }
 
   @Override
   public void teleopPeriodic() {
-    differentialDrive.tankDrive(leftJoystick.getY(), rightJoystick.getY());
+    // control with joystick 
+    double rightTorque = rightJoystick.getRawAxis(1); 
+    double leftTorque = leftJoystick.getRawAxis(5); 
+
+    frontMotorLeft.set(ControlMode.PercentOutput, leftTorque); 
+    frontMotorRight.set(ControlMode.PercentOutput, rightTorque);
+    backMotorLeft.set(ControlMode.Follower, 0); 
+    backMotorRight.set(ControlMode.Follower,10); 
   }
-
-  @Override
-  public void disabledInit() {}
-
-  @Override
-  public void disabledPeriodic() {}
-
-  @Override
-  public void testInit() {}
-
-  @Override
-  public void testPeriodic() {}
-
-  @Override
-  public void simulationInit() {}
-
-  @Override
-  public void simulationPeriodic() {}
+  
 }
