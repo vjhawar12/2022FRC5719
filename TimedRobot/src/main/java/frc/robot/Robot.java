@@ -27,9 +27,7 @@ public class Robot extends TimedRobot implements Constants {
   public void robotInit() {
     sendableChooser.setDefaultOption("Default Auto", kDefaultAuto);
     sendableChooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", sendableChooser);
-
-    frontMotorLeft.setInverted(true); 
+    SmartDashboard.putData("Auto choices", sendableChooser); 
     rightJoystick = new Joystick(rightJoystickPort); 
     leftJoystick = new Joystick(leftJoystickPort); 
   }
@@ -50,9 +48,12 @@ public class Robot extends TimedRobot implements Constants {
 
   @Override
   public void autonomousPeriodic() {
-   if (timer.get() < 5.0) {
+   // if (timer.get() < 5.0) {
     frontMotorRight.set(ControlMode.Velocity, 10);
-   }
+    frontMotorLeft.set(ControlMode.Velocity, 10); 
+    backMotorRight.set(ControlMode.Follower, 0); 
+    backMotorLeft.set(ControlMode.Follower, 1); 
+   // }
   }
 
   @Override
@@ -69,7 +70,7 @@ public class Robot extends TimedRobot implements Constants {
     frontMotorLeft.set(ControlMode.PercentOutput, leftTorque); 
     frontMotorRight.set(ControlMode.PercentOutput, rightTorque);
     backMotorLeft.set(ControlMode.Follower, 0); 
-    backMotorRight.set(ControlMode.Follower,10); 
+    backMotorRight.set(ControlMode.Follower, 1); 
   }
   
 }
