@@ -1,78 +1,41 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 
 public class Robot extends TimedRobot implements Constants {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String autoSelected;
-  private final SendableChooser<String> sendableChooser = new SendableChooser<>();
-  private Timer timer; 
+  protected Timer timer; 
 
-  private final VictorSPX frontMotorLeft = new VictorSPX(frontLeftMotorPort); 
-  private final VictorSPX frontMotorRight = new VictorSPX(frontRightMotorPort); 
-  private final VictorSPX backMotorRight = new VictorSPX(backRightMotorPort); 
-  private final VictorSPX backMotorLeft = new VictorSPX(backLeftMotorPort); 
+  protected final VictorSPX frontMotorLeft = new VictorSPX(frontLeftMotorPort); 
+  protected final VictorSPX frontMotorRight = new VictorSPX(frontRightMotorPort); 
+  protected final VictorSPX backMotorRight = new VictorSPX(backRightMotorPort); 
+  protected final VictorSPX backMotorLeft = new VictorSPX(backLeftMotorPort); 
 
   public Joystick joystick = new Joystick(0); 
 
-  @Override
-  public void robotInit() {
-    sendableChooser.setDefaultOption("Default Auto", kDefaultAuto);
-    sendableChooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", sendableChooser); 
-  }
-
-  @Override
-  public void robotPeriodic() {
-    
-  }
-
-  public void driveStraight(double speed) {
-    
-  }
+  private AutoDrive autoDrive; 
+  private JoystickDrive joystickDrive; 
 
   @Override
   public void autonomousInit() {
-    frontMotorRight.setInverted(true);
-    backMotorRight.setInverted(true); 
-    autoSelected = sendableChooser.getSelected();
-    System.out.println("Auto selected: " + autoSelected);
-    timer = new Timer(); 
-    timer.start();
+    autoDrive = new AutoDrive(); 
   }
 
   @Override
   public void autonomousPeriodic() {
-  if (timer.get() < 3.0) {
-    frontMotorRight.set(ControlMode.PercentOutput, 10);
-    frontMotorLeft.set(ControlMode.PercentOutput, 10); 
-    backMotorRight.set(ControlMode.Follower, 0); 
-    backMotorLeft.set(ControlMode.Follower, 1); 
-   }
+    autoDrive.periodic(); 
   }
 
   @Override
   public void teleopInit() {
-
+    joystickDrive = new JoystickDrive(); 
   }
 
   @Override
   public void teleopPeriodic() {
-    // control with joystick 
-    double rightTorque = joystick.getRawAxis(1); 
-    double leftTorque = -1 * joystick.getRawAxis(2); 
-
-    frontMotorLeft.set(ControlMode.PercentOutput, leftTorque); 
-    frontMotorRight.set(ControlMode.PercentOutput, rightTorque);
-    backMotorLeft.set(ControlMode.Follower, 0); 
-    backMotorRight.set(ControlMode.Follower, 1); 
+    joystickDrive.periodic(); 
   }
   
 }
