@@ -20,16 +20,13 @@ public class Robot extends TimedRobot implements Constants {
   private final VictorSPX backMotorRight = new VictorSPX(backRightMotorPort); 
   private final VictorSPX backMotorLeft = new VictorSPX(backLeftMotorPort); 
 
-  public Joystick rightJoystick; 
-  public Joystick leftJoystick; 
+  public Joystick joystick = new Joystick(0); 
 
   @Override
   public void robotInit() {
     sendableChooser.setDefaultOption("Default Auto", kDefaultAuto);
     sendableChooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", sendableChooser); 
-    rightJoystick = new Joystick(rightJoystickPort); 
-    leftJoystick = new Joystick(leftJoystickPort); 
   }
 
   @Override
@@ -37,9 +34,14 @@ public class Robot extends TimedRobot implements Constants {
     
   }
 
+  public void driveStraight(double speed) {
+    
+  }
 
   @Override
   public void autonomousInit() {
+    frontMotorRight.setInverted(true);
+    backMotorRight.setInverted(true); 
     autoSelected = sendableChooser.getSelected();
     System.out.println("Auto selected: " + autoSelected);
     timer = new Timer(); 
@@ -48,12 +50,12 @@ public class Robot extends TimedRobot implements Constants {
 
   @Override
   public void autonomousPeriodic() {
-   // if (timer.get() < 5.0) {
-    frontMotorRight.set(ControlMode.Velocity, 10);
-    frontMotorLeft.set(ControlMode.Velocity, 10); 
+  if (timer.get() < 3.0) {
+    frontMotorRight.set(ControlMode.PercentOutput, 10);
+    frontMotorLeft.set(ControlMode.PercentOutput, 10); 
     backMotorRight.set(ControlMode.Follower, 0); 
     backMotorLeft.set(ControlMode.Follower, 1); 
-   // }
+   }
   }
 
   @Override
@@ -64,8 +66,8 @@ public class Robot extends TimedRobot implements Constants {
   @Override
   public void teleopPeriodic() {
     // control with joystick 
-    double rightTorque = rightJoystick.getRawAxis(1); 
-    double leftTorque = leftJoystick.getRawAxis(5); 
+    double rightTorque = joystick.getRawAxis(1); 
+    double leftTorque = -1 * joystick.getRawAxis(2); 
 
     frontMotorLeft.set(ControlMode.PercentOutput, leftTorque); 
     frontMotorRight.set(ControlMode.PercentOutput, rightTorque);
