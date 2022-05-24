@@ -3,13 +3,17 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class JoystickDrive extends Robot {
+    double rightTorque; 
+    double leftTorque; 
+
     JoystickDrive() {
-        
+        rightTorque = 0; 
+        leftTorque = 0; 
     }
 
     public void periodic() {
-        double rightTorque = joystick.getRawAxis(1); 
-        double leftTorque = -1 * joystick.getRawAxis(2); 
+        rightTorque = joystick.getRawAxis(Constants.rightJoystickPort); 
+        leftTorque = joystick.getRawAxis(Constants.leftJoystickPort); 
     
         frontMotorLeft.set(ControlMode.PercentOutput, leftTorque); 
         frontMotorRight.set(ControlMode.PercentOutput, rightTorque);

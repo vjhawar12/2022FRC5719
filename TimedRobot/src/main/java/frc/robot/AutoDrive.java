@@ -5,14 +5,12 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class AutoDrive extends Robot {
     public AutoDrive() {
-        frontMotorRight.setInverted(true);
-        backMotorRight.setInverted(true); 
         timer = new Timer(); 
         timer.start();
     }
 
     private void driveStraight(double velocity) {
-
+        
     }
 
     private void driveStraight(int percentage) {
