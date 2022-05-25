@@ -21,11 +21,11 @@ public class limeLight{
     //If target is 0/false, there's no target. Else if the target is 1/true, there's a target
 
     //post to smart dashboard periodically
-    SmartDashboard.putNumber("LimelightX", x);
-    SmartDashboard.putNumber("LimelightY", y);
-    SmartDashboard.putNumber("LimelightArea", area);
+    //SmartDashboard.putNumber("LimelightX", x);
+    //SmartDashboard.putNumber("LimelightY", y);
+    //SmartDashboard.putNumber("LimelightArea", area);
 
-    SmartDashboard.putNumber("Target", target);//AA
+    //SmartDashboard.putNumber("Target", target);//AA
 
 
 
