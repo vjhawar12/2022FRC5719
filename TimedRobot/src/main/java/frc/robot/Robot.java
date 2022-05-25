@@ -20,7 +20,7 @@ public class Robot extends TimedRobot implements Constants {
   public Joystick joystick = new Joystick(0); 
 
   private void driveStraight(double vel) {
-    rightFront.set(ControlMode.PercentOutput, vel);
+    rightFront.set(controlMode.PercentOutput, vel);
     leftFront.set(ControlMode.PercentOutput, vel); 
     rightFollower.set(ControlMode.Follower, 0); 
     leftFollower.set(ControlMode.Follower, 1); 
