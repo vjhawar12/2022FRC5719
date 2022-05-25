@@ -1,6 +1,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
@@ -20,17 +22,17 @@ public class Robot extends TimedRobot implements Constants {
   public Joystick joystick = new Joystick(0); 
 
   private void driveStraight(double vel) {
-    rightFront.set(controlMode.PercentOutput, vel);
-    leftFront.set(ControlMode.PercentOutput, vel); 
-    rightFollower.set(ControlMode.Follower, 1); 
-    leftFollower.set(ControlMode.Follower, 0); 
+    rightFront.set(VictorSPXControlMode.PercentOutput, vel);
+    leftFront.set(VictorSPXControlMode.PercentOutput, vel); 
+    rightFollower.set(VictorSPXControlMode.Follower, 1); 
+    leftFollower.set(VictorSPXControlMode.Follower, 0); 
 }
 
   private void driveStraight(double xVel, double yVel) {
-    rightFront.set(ControlMode.PercentOutput, xVel);
-    leftFront.set(ControlMode.PercentOutput, yVel); 
-    rightFollower.set(ControlMode.Follower, 1); 
-    leftFollower.set(ControlMode.Follower, 0); 
+    rightFront.set(VictorSPXControlMode.PercentOutput, xVel);
+    leftFront.set(VictorSPXControlMode.PercentOutput, yVel); 
+    rightFollower.set(VictorSPXControlMode.Follower, 1); 
+    leftFollower.set(VictorSPXControlMode.Follower, 0); 
   }
 
   @Override
