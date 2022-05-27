@@ -13,25 +13,25 @@ public class Robot extends TimedRobot implements Constants {
 
   protected double rightTorque, leftTorque; 
 
-  protected final VictorSPX leftFront  = new VictorSPX(2); 
-  protected final VictorSPX rightFront = new VictorSPX(3); 
-  protected final VictorSPX rightFollower = new VictorSPX(1); 
-  protected final VictorSPX leftFollower = new VictorSPX(0); 
+  protected final VictorSPX leftFront  = new VictorSPX(LEFT_FRONT); 
+  protected final VictorSPX rightFront = new VictorSPX(RIGHT_FRONT); 
+  protected final VictorSPX rightFollower = new VictorSPX(RIGHT_FOLLOWER); 
+  protected final VictorSPX leftFollower = new VictorSPX(LEFT_FOLLOWER); 
 
   public Joystick joystick = new Joystick(0);  
 
-  private void driveStraight(double vel) {
+  private void driveAuto(double vel) {
     rightFront.set(ControlMode.PercentOutput, vel);
     leftFront.set(ControlMode.PercentOutput, vel); 
-    rightFollower.set(ControlMode.Follower, 3); 
-    leftFollower.set(ControlMode.Follower, 2); 
+    rightFollower.set(ControlMode.Follower, RIGHT_FRONT); 
+    leftFollower.set(ControlMode.Follower, LEFT_FRONT); 
 }
 
-  private void driveStraight(double xVel, double yVel) {
+  private void driveTeleop(double xVel, double yVel) {
     rightFront.set(ControlMode.PercentOutput, xVel);
     leftFront.set(ControlMode.PercentOutput, yVel); 
-    rightFollower.set(ControlMode.Follower, 3); 
-    leftFollower.set(ControlMode.Follower, 2); 
+    rightFollower.set(ControlMode.Follower, RIGHT_FRONT); 
+    leftFollower.set(ControlMode.Follower, LEFT_FRONT); 
   }
 
   @Override
@@ -43,8 +43,8 @@ public class Robot extends TimedRobot implements Constants {
 
   @Override
   public void autonomousPeriodic() {
-    if (timer.get() < 5.0) {
-      driveStraight(100); 
+    if (timer.get() < 2.0) {
+      driveAuto(100); 
     }
   }
 
@@ -56,8 +56,9 @@ public class Robot extends TimedRobot implements Constants {
 
   @Override
   public void teleopPeriodic() {
-    rightTorque = joystick.getRawAxis(1); 
-    leftTorque = -1 * joystick.getRawAxis(5); 
-    driveStraight(rightTorque, leftTorque); 
+    rightTorque = joystick.getRawAxis(JOYSTICK_RIGHT); 
+    leftTorque = -1 * joystick.getRawAxis(JOYSTICK_LEFT); 
+    driveTeleop(rightTorque, leftTorque); 
   }
 }
+
