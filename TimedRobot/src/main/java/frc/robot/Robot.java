@@ -57,7 +57,7 @@ public class Robot extends TimedRobot implements Constants {
   @Override
   public void teleopPeriodic() {
     rightTorque = joystick.getRawAxis(JOYSTICK_RIGHT); 
-    leftTorque = -1 * joystick.getRawAxis(JOYSTICK_LEFT); 
+    leftTorque = joystick.getRawAxis(JOYSTICK_LEFT); 
     driveTeleop(rightTorque, leftTorque); 
   }
 }
