@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode; 
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PS4Controller; 
 import edu.wpi.first.wpilibj.Timer;
 
 
@@ -18,7 +18,7 @@ public class Robot extends TimedRobot implements Constants {
   protected final VictorSPX rightFollower = new VictorSPX(RIGHT_FOLLOWER); 
   protected final VictorSPX leftFollower = new VictorSPX(LEFT_FOLLOWER); 
 
-  public Joystick joystick = new Joystick(0);  
+  public PS4Controller controller = new PS4Controller(0);  
 
   private void driveAuto(double vel) {
     rightFront.set(ControlMode.PercentOutput, vel);
@@ -56,8 +56,8 @@ public class Robot extends TimedRobot implements Constants {
 
   @Override
   public void teleopPeriodic() {
-    rightTorque = joystick.getRawAxis(JOYSTICK_RIGHT); 
-    leftTorque = joystick.getRawAxis(JOYSTICK_LEFT); 
+    rightTorque = controller.getRawAxis(JOYSTICK_RIGHT); 
+    leftTorque = -1 * controller.getRawAxis(JOYSTICK_LEFT); 
     driveTeleop(rightTorque, leftTorque); 
   }
 }
