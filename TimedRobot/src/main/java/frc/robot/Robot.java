@@ -1,40 +1,42 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX; 
+
 import com.ctre.phoenix.motorcontrol.ControlMode; 
-import edu.wpi.first.wpilibj.Joystick;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 public class Robot extends TimedRobot implements Constants {
   protected Timer timer; 
+  protected double forwardTorque, lateralTorque; 
 
-  protected double rightTorque, leftTorque; 
+  protected final VictorSPX leftFront  = new VictorSPX(LEFT_FRONT); 
+  protected final VictorSPX rightFront = new VictorSPX(RIGHT_FRONT); 
+  protected final VictorSPX rightFollower = new VictorSPX(RIGHT_FOLLOWER); 
+  protected final VictorSPX leftFollower = new VictorSPX(LEFT_FOLLOWER); 
 
-  protected final VictorSPX leftFront  = new VictorSPX(0); 
-  protected final VictorSPX rightFront = new VictorSPX(1); 
-  protected final VictorSPX rightFollower = new VictorSPX(2); 
-  protected final VictorSPX leftFollower = new VictorSPX(3); 
+  public PS4Controller controller = new PS4Controller(0);  
 
-  public Joystick joystick = new Joystick(0); 
-
-  private void driveStraight(double vel) {
+  private void driveAuto(double vel) {  
     rightFront.set(ControlMode.PercentOutput, vel);
     leftFront.set(ControlMode.PercentOutput, vel); 
-    rightFollower.set(ControlMode.Follower, 0); 
-    leftFollower.set(ControlMode.Follower, 1); 
+    rightFollower.set(ControlMode.Follower, RIGHT_FRONT); 
+    leftFollower.set(ControlMode.Follower, LEFT_FRONT); 
 }
 
-  private void driveStraight(double xVel, double yVel) {
+  private void driveTeleop(double xVel, double yVel) {
     rightFront.set(ControlMode.PercentOutput, xVel);
     leftFront.set(ControlMode.PercentOutput, yVel); 
-    rightFollower.set(ControlMode.Follower, 0); 
-    leftFollower.set(ControlMode.Follower, 1); 
+    rightFollower.set(ControlMode.Follower, RIGHT_FRONT); 
+    leftFollower.set(ControlMode.Follower, LEFT_FRONT);
   }
 
   @Override
   public void autonomousInit() {
+    timer = new Timer(); 
     timer.reset(); 
     timer.start();
     timer.stop();
@@ -43,8 +45,8 @@ public class Robot extends TimedRobot implements Constants {
 
   @Override
   public void autonomousPeriodic() {
-    if (timer.get() < 3.0) {
-      driveStraight(30); 
+    if (timer.get() < 2.0) {
+      driveAuto(100); 
     }
   }
 
@@ -56,8 +58,10 @@ public class Robot extends TimedRobot implements Constants {
 
   @Override
   public void teleopPeriodic() {
-    rightTorque = joystick.getRawAxis(Constants.rightJoystickPort); 
-    leftTorque = joystick.getRawAxis(Constants.leftJoystickPort); 
-    driveStraight(rightTorque, leftTorque); 
+    forwardTorque = controller.getRawAxis(JOYSTICK_LEFT); 
+    lateralTorque = -1 * controller.getRawAxis(JOYSICK_RIGHT); 
+    // System.out.println(rightTorque + " , " + leftTorque); 
+    driveTeleop(forwardTorque, lateralTorque); 
   }
-}
+} 
+
