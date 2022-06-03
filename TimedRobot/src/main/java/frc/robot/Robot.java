@@ -27,9 +27,9 @@ public class Robot extends TimedRobot implements Constants {
     leftFollower.set(ControlMode.Follower, LEFT_FRONT); 
 }
 
-  private void driveTeleop(double xVel, double yVel) {
-    rightFront.set(ControlMode.PercentOutput, xVel);
-    leftFront.set(ControlMode.PercentOutput, yVel); 
+  private void driveTeleop(double forward, double lateral) {
+    rightFront.set(ControlMode.PercentOutput, forward);
+    leftFront.set(ControlMode.PercentOutput, lateral); 
     rightFollower.set(ControlMode.Follower, RIGHT_FRONT); 
     leftFollower.set(ControlMode.Follower, LEFT_FRONT);
   }
@@ -60,7 +60,6 @@ public class Robot extends TimedRobot implements Constants {
   public void teleopPeriodic() {
     forwardTorque = controller.getRawAxis(JOYSTICK_LEFT); 
     lateralTorque = -1 * controller.getRawAxis(JOYSICK_RIGHT); 
-    // System.out.println(rightTorque + " , " + leftTorque); 
     driveTeleop(forwardTorque, lateralTorque); 
   }
 } 
