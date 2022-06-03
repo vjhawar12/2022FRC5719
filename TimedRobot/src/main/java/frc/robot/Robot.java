@@ -6,8 +6,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 public class Robot extends TimedRobot implements Constants {
   protected Timer timer; 
@@ -52,14 +50,14 @@ public class Robot extends TimedRobot implements Constants {
 
   @Override
   public void teleopInit() {
-    rightTorque = 0; 
-    leftTorque = 0; 
+    forwardTorque = 0; 
+    lateralTorque = 0; 
   }
 
   @Override
   public void teleopPeriodic() {
     forwardTorque = controller.getRawAxis(JOYSTICK_LEFT); 
-    lateralTorque = -1 * controller.getRawAxis(JOYSICK_RIGHT); 
+    lateralTorque = -1 * controller.getRawAxis(JOYSTICK_RIGHT); 
     driveTeleop(forwardTorque, lateralTorque); 
   }
 } 
